@@ -25,17 +25,13 @@
     .main {
       display: flex;
       gap: 50px;
-    }
-
-    .wheel-wrapper {
-      position: relative;
-      width: 600px;
-      height: 600px;
+      align-items: center;
     }
 
     .wheel-container {
-      width: 100%;
-      height: 100%;
+      position: relative;
+      width: 600px;
+      height: 600px;
       border-radius: 50%;
       border: 10px solid #444;
       overflow: hidden;
@@ -45,23 +41,21 @@
     #wheel {
       width: 100%;
       height: 100%;
+      transform: rotate(0deg);
       transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
     }
 
     .arrow {
       position: absolute;
       top: 50%;
-      right: -60px;
-      transform: translateY(-50%);
-      width: 60px;
-      height: 60px;
+      left: 100%;
+      transform: translate(-50%, -50%);
+      width: 0;
+      height: 0;
+      border-top: 20px solid transparent;
+      border-bottom: 20px solid transparent;
+      border-left: 30px solid red;
       z-index: 1000;
-    }
-
-    .arrow img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
     }
 
     .side-panel {
@@ -99,13 +93,9 @@
 </head>
 <body>
   <div class="main">
-    <div class="wheel-wrapper">
-      <div class="wheel-container">
-        <canvas id="wheel"></canvas>
-      </div>
-      <div class="arrow">
-        <img src="https://i.ibb.co/SX9pHbzn/left.png" alt="Стрелка">
-      </div>
+    <div class="wheel-container">
+      <canvas id="wheel"></canvas>
+      <div class="arrow"></div>
     </div>
     <div class="side-panel">
       <button id="spin">Крутить</button>
@@ -115,12 +105,27 @@
 
   <script>
     const prizes = [
-      "Рюкзак на 120 литров", "Перчатки", "Водка", "Чупа-Чупс", "Шкаф Деревянный",
-      "Покрутить Рулетку ещё два раза", "Шприц на Стамину", "Не повезло :(",
-      "Сапоги", "АКМ фулл-обвес", "150 тысяч рублей", "Шкаф для оружия",
-      "Пачка патронов 7.62x39", "Шприц 'Вытяжка из грибов'", "Шприц 'Рябиновка' [2 штуки]",
-      "Шприц 'Чертовка' [2 штуки]", "Оружейный ремень", "Обычный шкаф",
-      "Детектор 'Медведь'", "Шприц 'Промедол'", "Контейнер для артефактов"
+      "Рюкзак на 120 литров",
+      "Перчатки",
+      "Водка",
+      "Чупа-Чупс",
+      "Шкаф Деревянный",
+      "Покрутить Рулетку ещё два раза",
+      "Шприц на Стамину",
+      "Не повезло :(",
+      "Сапоги",
+      "АКМ фулл-обвес",
+      "150 тысяч рублей",
+      "Шкаф для оружия",
+      "Пачка патронов 7.62x39",
+      "Шприц 'Вытяжка из грибов'",
+      "Шприц 'Рябиновка' [2 штуки]",
+      "Шприц 'Чертовка' [2 штуки]",
+      "Оружейный ремень",
+      "Обычный шкаф",
+      "Детектор 'Медведь'",
+      "Шприц 'Промедол'",
+      "Контейнер для артефактов"
     ];
 
     const canvas = document.getElementById("wheel");
@@ -161,29 +166,21 @@
     const resultDiv = document.getElementById("result");
 
     spinButton.addEventListener("click", () => {
-  const randomSpins = Math.floor(Math.random() * 5) + 5;
-  const totalRotation = randomSpins * 2 * Math.PI;
+      const randomSpins = Math.floor(Math.random() * 5) + 5;
+      const randomSegment = Math.floor(Math.random() * prizes.length);
 
-  // Итоговый угол (относительно стрелки справа — 90° или Math.PI / 2)
-  const finalAngle = totalRotation;
+      const targetAngle = randomSegment * segmentAngle;
+      const arrowAngle = Math.PI / 2;
+      const totalRotation = randomSpins * 2 * Math.PI + arrowAngle - targetAngle;
 
-  // Обновляем текущий угол
-  currentAngle += finalAngle;
-  canvas.style.transform = `rotate(${-currentAngle}rad)`;
+      currentAngle += totalRotation;
+      canvas.style.transform = `rotate(${-currentAngle}rad)`;
 
-  setTimeout(() => {
-    // Текущий угол, с приведением в диапазон [0, 2PI)
-    const normalizedAngle = (currentAngle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
-
-    // Смещаем относительно стрелки (которая смотрит вправо — Math.PI / 2)
-    const angleUnderArrow = (normalizedAngle + Math.PI / 2) % (2 * Math.PI);
-
-    // Индекс сектора, на который указывает стрелка
-    const prizeIndex = Math.floor(angleUnderArrow / segmentAngle) % prizes.length;
-
-    resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[prizeIndex]}`;
-  }, 5100);
-});
+      setTimeout(() => {
+        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[randomSegment]}`;
+      }, 5100);
+    });
   </script>
 </body>
 </html>
+
