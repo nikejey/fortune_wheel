@@ -46,9 +46,9 @@
 
     .arrow {
       position: absolute;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 50%;
+      left: -30px;
+      transform: translateY(-50%);
       width: 0;
       height: 0;
       border-left: 20px solid transparent;
@@ -171,11 +171,7 @@
       currentAngle += finalAngle;
       canvas.style.transform = `rotate(${-currentAngle}rad)`;
 
-      // Обновляем положение стрелки
-      const arrow = document.querySelector('.arrow');
-      const arrowAngle = -currentAngle % (2 * Math.PI);  // Нормализуем угол
-      arrow.style.transform = `translateX(-50%) rotate(${arrowAngle}rad)`;
-
+      // Статичная стрелка уже указывает на выигрышный сегмент
       setTimeout(() => {
         resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[winningSegment]}`;
       }, 5100);
