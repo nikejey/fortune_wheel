@@ -161,21 +161,26 @@
     const resultDiv = document.getElementById("result");
 
     spinButton.addEventListener("click", () => {
-      const randomSpins = Math.floor(Math.random() * 5) + 5;
-      const totalRotation = randomSpins * 2 * Math.PI;
-      const targetAngle = currentAngle + totalRotation;
-      const normalizedAngle = (2 * Math.PI - (targetAngle % (2 * Math.PI))) % (2 * Math.PI);
+  const randomSpins = Math.floor(Math.random() * 5) + 5;
+  const randomSegment = Math.floor(Math.random() * prizes.length);
 
-      const arrowAngle = Math.PI / 2; // стрелка справа
-      const selectedIndex = Math.floor((normalizedAngle + arrowAngle) / segmentAngle) % prizes.length;
+  // Обновляем угол вращения — сбрасываем всё и задаём новый поворот
+  const fullSpinsAngle = randomSpins * 2 * Math.PI;
+  const targetAngle = randomSegment * segmentAngle;
 
-      currentAngle += totalRotation;
-      canvas.style.transform = `rotate(${-currentAngle}rad)`;
+  // Угол, под которым находится стрелка — справа (90° = PI/2)
+  const arrowAngle = Math.PI / 2;
 
-      setTimeout(() => {
-        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[selectedIndex]}`;
-      }, 5100);
-    });
+  // Общий поворот, чтобы выбранный сегмент оказался под стрелкой
+  const totalRotation = fullSpinsAngle + arrowAngle - targetAngle;
+
+  canvas.style.transform = `rotate(-${totalRotation}rad)`;
+
+  // Показываем результат
+  setTimeout(() => {
+    resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[randomSegment]}`;
+  }, 5100);
+});
   </script>
 </body>
 </html>
