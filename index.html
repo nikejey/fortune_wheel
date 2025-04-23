@@ -51,7 +51,7 @@
     .arrow {
       position: absolute;
       top: 50%;
-      right: -60px;
+      right: -40px;
       transform: translateY(-50%);
       width: 60px;
       height: 60px;
@@ -104,7 +104,7 @@
         <canvas id="wheel"></canvas>
       </div>
       <div class="arrow">
-        <img src="https://i.ibb.co/SX9pHbzn/left.png" alt="Стрелка">
+        <img src="https://i.ibb.co/SX9pHbZ/left.png" alt="Стрелка">
       </div>
     </div>
     <div class="side-panel">
@@ -156,31 +156,24 @@
 
     drawWheel();
 
-    let currentAngle = 0;
     const spinButton = document.getElementById("spin");
     const resultDiv = document.getElementById("result");
 
     spinButton.addEventListener("click", () => {
-  const randomSpins = Math.floor(Math.random() * 5) + 5;
-  const randomSegment = Math.floor(Math.random() * prizes.length);
+      const randomSpins = Math.floor(Math.random() * 5) + 5;
+      const selectedSegment = Math.floor(Math.random() * prizes.length);
 
-  // Обновляем угол вращения — сбрасываем всё и задаём новый поворот
-  const fullSpinsAngle = randomSpins * 2 * Math.PI;
-  const targetAngle = randomSegment * segmentAngle;
+      // Вычисляем угол, чтобы выбранный сектор оказался строго справа (на 90° / PI/2)
+      const targetAngle = selectedSegment * segmentAngle;
+      const offsetAngle = Math.PI / 2 - targetAngle;
+      const totalRotation = randomSpins * 2 * Math.PI + offsetAngle;
 
-  // Угол, под которым находится стрелка — справа (90° = PI/2)
-  const arrowAngle = Math.PI / 2;
+      canvas.style.transform = `rotate(-${totalRotation}rad)`;
 
-  // Общий поворот, чтобы выбранный сегмент оказался под стрелкой
-  const totalRotation = fullSpinsAngle + arrowAngle - targetAngle;
-
-  canvas.style.transform = `rotate(-${totalRotation}rad)`;
-
-  // Показываем результат
-  setTimeout(() => {
-    resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[randomSegment]}`;
-  }, 5100);
-});
+      setTimeout(() => {
+        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[selectedSegment]}`;
+      }, 5100);
+    });
   </script>
 </body>
 </html>
