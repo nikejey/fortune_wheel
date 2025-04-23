@@ -117,16 +117,16 @@
       "Шприц 'Чертовка' [2 штуки]", "Оружейный ремень", "Обычный шкаф",
       "Детектор 'Медведь'", "Шприц 'Промедол'", "Контейнер для артефактов"
     ];
-
+  
     const canvas = document.getElementById("wheel");
     const ctx = canvas.getContext("2d");
     canvas.width = 600;
     canvas.height = 600;
-
+  
     const center = { x: 300, y: 300 };
     const radius = 300;
     const segmentAngle = 2 * Math.PI / prizes.length;
-
+  
     function drawWheel() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let i = 0; i < prizes.length; i++) {
@@ -148,26 +148,30 @@
         ctx.restore();
       }
     }
-
+  
     drawWheel();
-
+  
     let currentAngle = 0;
     const spinButton = document.getElementById("spin");
     const resultDiv = document.getElementById("result");
-
+  
     spinButton.addEventListener("click", () => {
+      spinButton.disabled = true;
+  
       const randomSpins = Math.floor(Math.random() * 5) + 5;
       const targetSegment = Math.floor(Math.random() * prizes.length);
-
-      // смещаем "призовой" сегмент так, чтобы он оказался под правой стрелкой (на 0 градусов)
-      const offsetAngle = Math.PI / 2; // стрелка направлена вправо (на 90°)
-      const finalAngle = randomSpins * 2 * Math.PI + (prizes.length - targetSegment) * segmentAngle - offsetAngle;
-
+  
+      // Стрелка направлена вправо => offsetAngle = 0
+      const offsetAngle = 0;
+      const segmentOffset = (targetSegment + 0.5) * segmentAngle; // центр сектора
+      const finalAngle = randomSpins * 2 * Math.PI + (2 * Math.PI - segmentOffset) + offsetAngle;
+  
       currentAngle += finalAngle;
-      canvas.style.transform = `rotate(${-currentAngle}rad)`;
-
+      canvas.style.transform = rotate(${-currentAngle}rad);
+  
       setTimeout(() => {
-        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[targetSegment]}`;
+        resultDiv.textContent = Поздравляю! Ваш выигрыш: ${prizes[targetSegment]};
+        spinButton.disabled = false;
       }, 5100);
     });
   </script>
