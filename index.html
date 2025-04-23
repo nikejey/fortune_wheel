@@ -167,7 +167,8 @@
 
       setTimeout(() => {
         const normalizedAngle = (currentAngle % (2 * Math.PI));
-        const index = Math.floor((2 * Math.PI - normalizedAngle + segmentAngle / 2) % (2 * Math.PI) / segmentAngle);
+        const adjustedAngle = (normalizedAngle + Math.PI / 2) % (2 * Math.PI);
+        const index = Math.floor(adjustedAngle / segmentAngle);
         resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[index]}`;
         spinButton.disabled = false;
       }, 5100);
