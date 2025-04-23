@@ -161,20 +161,29 @@
     const resultDiv = document.getElementById("result");
 
     spinButton.addEventListener("click", () => {
-      const randomSpins = Math.floor(Math.random() * 5) + 5;
-      const prizeIndex = Math.floor(Math.random() * prizes.length);
+  const randomSpins = Math.floor(Math.random() * 5) + 5;
+  const totalRotation = randomSpins * 2 * Math.PI;
 
-      // Стрелка смотрит ВПРАВО (90° или Math.PI / 2)
-      const arrowAngle = Math.PI / 2;
+  // Итоговый угол (относительно стрелки справа — 90° или Math.PI / 2)
+  const finalAngle = totalRotation;
 
-      const finalAngle = randomSpins * 2 * Math.PI + ((prizes.length - prizeIndex) * segmentAngle) - arrowAngle;
-      currentAngle += finalAngle;
-      canvas.style.transform = `rotate(${-currentAngle}rad)`;
+  // Обновляем текущий угол
+  currentAngle += finalAngle;
+  canvas.style.transform = `rotate(${-currentAngle}rad)`;
 
-      setTimeout(() => {
-        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[prizeIndex]}`;
-      }, 5100);
-    });
+  setTimeout(() => {
+    // Текущий угол, с приведением в диапазон [0, 2PI)
+    const normalizedAngle = (currentAngle % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+
+    // Смещаем относительно стрелки (которая смотрит вправо — Math.PI / 2)
+    const angleUnderArrow = (normalizedAngle + Math.PI / 2) % (2 * Math.PI);
+
+    // Индекс сектора, на который указывает стрелка
+    const prizeIndex = Math.floor(angleUnderArrow / segmentAngle) % prizes.length;
+
+    resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[prizeIndex]}`;
+  }, 5100);
+});
   </script>
 </body>
 </html>
