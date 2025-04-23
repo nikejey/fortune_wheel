@@ -159,25 +159,32 @@
     const spinButton = document.getElementById("spin");
     const resultDiv = document.getElementById("result");
   
-    let totalRotation = 0;
+    let currentRotation = 0;
   
     spinButton.addEventListener("click", () => {
-      const extraSpins = Math.floor(Math.random() * 5) + 5;
+      const fullSpins = Math.floor(Math.random() * 5) + 5;
       const randomOffset = Math.random() * 2 * Math.PI;
-      const rotation = extraSpins * 2 * Math.PI + randomOffset;
+      const spinAmount = fullSpins * 2 * Math.PI + randomOffset;
   
-      totalRotation += rotation;
+      currentRotation += spinAmount;
   
       canvas.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-      canvas.style.transform = `rotate(-${totalRotation}rad)`;
+      canvas.style.transform = `rotate(-${currentRotation}rad)`;
   
       setTimeout(() => {
-        const normalizedAngle = totalRotation % (2 * Math.PI);
-        const arrowAngle = Math.PI / 2; // Справа
-        const correctedAngle = (normalizedAngle + arrowAngle) % (2 * Math.PI);
-        const prizeIndex = Math.floor(correctedAngle / segmentAngle) % prizes.length;
+        // Угол, куда смотрит стрелка (справа = 90°)
+        const arrowAngle = Math.PI / 2;
   
-        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[prizeIndex]}`;
+        // Текущий угол колеса с учётом полного вращения
+        const normalizedRotation = currentRotation % (2 * Math.PI);
+  
+        // Угол, который оказывается под стрелкой
+        const relativeAngle = (normalizedRotation + arrowAngle) % (2 * Math.PI);
+  
+        // Вычисление индекса сегмента
+        let index = Math.floor((2 * Math.PI - relativeAngle) / segmentAngle) % prizes.length;
+  
+        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[index]}`;
       }, 5100);
     });
   </script>
