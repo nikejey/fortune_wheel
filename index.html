@@ -27,10 +27,15 @@
       gap: 50px;
     }
 
-    .wheel-container {
+    .wheel-wrapper {
       position: relative;
       width: 600px;
       height: 600px;
+    }
+
+    .wheel-container {
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
       border: 10px solid #444;
       overflow: hidden;
@@ -40,22 +45,20 @@
     #wheel {
       width: 100%;
       height: 100%;
-      transform: rotate(0deg);
       transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
     }
 
-    /* Стрелка, теперь с добавлением z-index */
     .arrow {
       position: absolute;
-      top: -60px; /* Позиционируем стрелку сверху */
-      left: 50%;
-      transform: translateX(-50%);
+      top: 50%;
+      right: -30px;
+      transform: translateY(-50%);
       width: 0;
       height: 0;
-      border-left: 20px solid transparent;
-      border-right: 20px solid transparent;
-      border-bottom: 40px solid #c00; /* Красная стрелка */
-      z-index: 100; /* Задаём высокий приоритет, чтобы стрелка была поверх всех элементов */
+      border-top: 20px solid transparent;
+      border-bottom: 20px solid transparent;
+      border-left: 40px solid red;
+      z-index: 9999;
     }
 
     .side-panel {
@@ -93,9 +96,11 @@
 </head>
 <body>
   <div class="main">
-    <div class="wheel-container">
-      <div class="arrow"></div> <!-- Стрелка -->
-      <canvas id="wheel"></canvas>
+    <div class="wheel-wrapper">
+      <div class="wheel-container">
+        <canvas id="wheel"></canvas>
+      </div>
+      <div class="arrow"></div>
     </div>
     <div class="side-panel">
       <button id="spin">Крутить</button>
@@ -105,27 +110,12 @@
 
   <script>
     const prizes = [
-      "Рюкзак на 120 литров",
-      "Перчатки",
-      "Водка",
-      "Чупа-Чупс",
-      "Шкаф Деревянный",
-      "Покрутить Рулетку ещё два раза",
-      "Шприц на Стамину",
-      "Не повезло :(",
-      "Сапоги",
-      "АКМ фулл-обвес",
-      "150 тысяч рублей",
-      "Шкаф для оружия",
-      "Пачка патронов 7.62x39",
-      "Шприц 'Вытяжка из грибов'",
-      "Шприц 'Рябиновка' [2 штуки]",
-      "Шприц 'Чертовка' [2 штуки]",
-      "Оружейный ремень",
-      "Обычный шкаф",
-      "Детектор 'Медведь'",
-      "Шприц 'Промедол'",
-      "Контейнер для артефактов"
+      "Рюкзак на 120 литров", "Перчатки", "Водка", "Чупа-Чупс", "Шкаф Деревянный",
+      "Покрутить Рулетку ещё два раза", "Шприц на Стамину", "Не повезло :(",
+      "Сапоги", "АКМ фулл-обвес", "150 тысяч рублей", "Шкаф для оружия",
+      "Пачка патронов 7.62x39", "Шприц 'Вытяжка из грибов'", "Шприц 'Рябиновка' [2 штуки]",
+      "Шприц 'Чертовка' [2 штуки]", "Оружейный ремень", "Обычный шкаф",
+      "Детектор 'Медведь'", "Шприц 'Промедол'", "Контейнер для артефактов"
     ];
 
     const canvas = document.getElementById("wheel");
@@ -167,12 +157,17 @@
 
     spinButton.addEventListener("click", () => {
       const randomSpins = Math.floor(Math.random() * 5) + 5;
-      const randomSegment = Math.floor(Math.random() * prizes.length);
-      const finalAngle = randomSpins * 2 * Math.PI + randomSegment * segmentAngle + segmentAngle / 2;
+      const targetSegment = Math.floor(Math.random() * prizes.length);
+
+      // смещаем "призовой" сегмент так, чтобы он оказался под правой стрелкой (на 0 градусов)
+      const offsetAngle = Math.PI / 2; // стрелка направлена вправо (на 90°)
+      const finalAngle = randomSpins * 2 * Math.PI + (prizes.length - targetSegment) * segmentAngle - offsetAngle;
+
       currentAngle += finalAngle;
       canvas.style.transform = `rotate(${-currentAngle}rad)`;
+
       setTimeout(() => {
-        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[randomSegment]}`;
+        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[targetSegment]}`;
       }, 5100);
     });
   </script>
