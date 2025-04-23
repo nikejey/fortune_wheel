@@ -16,11 +16,15 @@
       background: url('https://r4.wallpaperflare.com/wallpaper/1010/701/293/chernobyl-pripyat-ferris-wheel-call-of-duty-4-modern-warfare-wallpaper-79c0387d211a0dcb3607583fa0a1563d.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #c0c0c0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .main {
+      display: flex;
+      gap: 50px;
     }
 
     .wheel-container {
@@ -40,8 +44,30 @@
       transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
     }
 
+    .arrow {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 40px solid #c00;
+    }
+
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border: 2px solid #555;
+      border-radius: 10px;
+      min-width: 300px;
+    }
+
     #spin {
-      margin-top: 30px;
       padding: 15px 30px;
       background-color: #111;
       border: 2px solid #666;
@@ -57,32 +83,23 @@
       background-color: #333;
     }
 
-    .arrow {
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 30px solid transparent;
-      border-right: 30px solid transparent;
-      border-bottom: 30px solid #c00;
-    }
-
     #result {
-      margin-top: 20px;
-      font-size: 20px;
+      font-size: 18px;
       text-shadow: 0 0 5px #000;
     }
   </style>
 </head>
 <body>
-  <div class="wheel-container">
-    <div class="arrow"></div>
-    <canvas id="wheel"></canvas>
+  <div class="main">
+    <div class="wheel-container">
+      <div class="arrow"></div>
+      <canvas id="wheel"></canvas>
+    </div>
+    <div class="side-panel">
+      <button id="spin">Крутить</button>
+      <div id="result">Ваш выигрыш появится здесь</div>
+    </div>
   </div>
-  <button id="spin">Крутить</button>
-  <div id="result"></div>
 
   <script>
     const prizes = [
