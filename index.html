@@ -162,31 +162,23 @@
     let currentRotation = 0;
   
     spinButton.addEventListener("click", () => {
-      const fullSpins = Math.floor(Math.random() * 5) + 5;
-      const randomOffset = Math.random() * 2 * Math.PI;
-      const spinAmount = fullSpins * 2 * Math.PI + randomOffset;
-  
-      currentRotation += spinAmount;
-  
-      canvas.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-      canvas.style.transform = `rotate(-${currentRotation}rad)`;
-  
-      setTimeout(() => {
-        // Угол, куда смотрит стрелка (справа = 90°)
-        const arrowAngle = Math.PI / 2;
-  
-        // Текущий угол колеса с учётом полного вращения
-        const normalizedRotation = currentRotation % (2 * Math.PI);
-  
-        // Угол, который оказывается под стрелкой
-        const relativeAngle = (normalizedRotation + arrowAngle) % (2 * Math.PI);
-  
-        // Вычисление индекса сегмента
-        let index = Math.floor((2 * Math.PI - relativeAngle) / segmentAngle) % prizes.length;
-  
-        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[index]}`;
-      }, 5100);
-    });
+  const randomSpins = Math.floor(Math.random() * 5) + 5;
+  const randomOffset = Math.random() * segmentAngle;
+
+  const totalRotation = randomSpins * 2 * Math.PI + randomOffset;
+  currentAngle += totalRotation;
+  canvas.style.transform = `rotate(${-currentAngle}rad)`;
+
+  // Расчёт сектора под стрелкой (справа = π/2)
+  const arrowAngle = Math.PI / 2;
+  const normalizedRotation = currentAngle % (2 * Math.PI);
+  const relativeAngle = (normalizedRotation + arrowAngle) % (2 * Math.PI);
+  const winningIndex = Math.floor((2 * Math.PI - relativeAngle) / segmentAngle) % prizes.length;
+
+  setTimeout(() => {
+    resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[winningIndex]}`;
+  }, 5100);
+});
   </script>
 </body>
 </html>
