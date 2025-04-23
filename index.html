@@ -46,6 +46,7 @@
       width: 100%;
       height: 100%;
       transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
+      transform-origin: center center;
     }
 
     .arrow {
@@ -98,7 +99,9 @@
   <div class="main">
     <div class="wheel-wrapper">
       <div class="wheel-container">
-        <canvas id="wheel"></canvas>
+        <div id="wheel">
+          <canvas id="wheelCanvas"></canvas>
+        </div>
       </div>
       <div class="arrow"></div>
     </div>
@@ -117,16 +120,16 @@
       "Шприц 'Чертовка' [2 штуки]", "Оружейный ремень", "Обычный шкаф",
       "Детектор 'Медведь'", "Шприц 'Промедол'", "Контейнер для артефактов"
     ];
-  
-    const canvas = document.getElementById("wheel");
+
+    const canvas = document.getElementById("wheelCanvas");
     const ctx = canvas.getContext("2d");
     canvas.width = 600;
     canvas.height = 600;
-  
+
     const center = { x: 300, y: 300 };
     const radius = 300;
     const segmentAngle = 2 * Math.PI / prizes.length;
-  
+
     function drawWheel() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let i = 0; i < prizes.length; i++) {
@@ -148,29 +151,29 @@
         ctx.restore();
       }
     }
-  
+
     drawWheel();
-  
+
     let currentAngle = 0;
     const spinButton = document.getElementById("spin");
     const resultDiv = document.getElementById("result");
-  
+    const wheel = document.getElementById("wheel");
+
     spinButton.addEventListener("click", () => {
       spinButton.disabled = true;
-  
+
       const randomSpins = Math.floor(Math.random() * 5) + 5;
       const targetSegment = Math.floor(Math.random() * prizes.length);
-  
-      // Стрелка направлена вправо => offsetAngle = 0
+
       const offsetAngle = 0;
-      const segmentOffset = (targetSegment + 0.5) * segmentAngle; // центр сектора
+      const segmentOffset = (targetSegment + 0.5) * segmentAngle;
       const finalAngle = randomSpins * 2 * Math.PI + (2 * Math.PI - segmentOffset) + offsetAngle;
-  
+
       currentAngle += finalAngle;
-      canvas.style.transform = rotate(${-currentAngle}rad);
-  
+      wheel.style.transform = `rotate(${-currentAngle}rad)`;
+
       setTimeout(() => {
-        resultDiv.textContent = Поздравляю! Ваш выигрыш: ${prizes[targetSegment]};
+        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[targetSegment]}`;
         spinButton.disabled = false;
       }, 5100);
     });
