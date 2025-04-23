@@ -160,17 +160,24 @@
     drawWheel();
 
     let currentAngle = 0;
+    let winningSegment = -1;
     const spinButton = document.getElementById("spin");
     const resultDiv = document.getElementById("result");
 
     spinButton.addEventListener("click", () => {
       const randomSpins = Math.floor(Math.random() * 5) + 5;
-      const randomSegment = Math.floor(Math.random() * prizes.length);
-      const finalAngle = randomSpins * 2 * Math.PI + randomSegment * segmentAngle + segmentAngle / 2;
+      winningSegment = Math.floor(Math.random() * prizes.length);  // Новый случайный сегмент
+      const finalAngle = randomSpins * 2 * Math.PI + winningSegment * segmentAngle + segmentAngle / 2;
       currentAngle += finalAngle;
       canvas.style.transform = `rotate(${-currentAngle}rad)`;
+
+      // Обновляем положение стрелки
+      const arrow = document.querySelector('.arrow');
+      const arrowAngle = -currentAngle % (2 * Math.PI);  // Нормализуем угол
+      arrow.style.transform = `translateX(-50%) rotate(${arrowAngle}rad)`;
+
       setTimeout(() => {
-        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[randomSegment]}`;
+        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[winningSegment]}`;
       }, 5100);
     });
   </script>
