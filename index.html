@@ -122,16 +122,16 @@
       "Шприц 'Чертовка' [2 штуки]", "Оружейный ремень", "Обычный шкаф",
       "Детектор 'Медведь'", "Шприц 'Промедол'", "Контейнер для артефактов"
     ];
-  
+
     const canvas = document.getElementById("wheel");
     const ctx = canvas.getContext("2d");
     canvas.width = 600;
     canvas.height = 600;
-  
+
     const center = { x: 300, y: 300 };
     const radius = 300;
     const segmentAngle = 2 * Math.PI / prizes.length;
-  
+
     function drawWheel() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let i = 0; i < prizes.length; i++) {
@@ -153,31 +153,27 @@
         ctx.restore();
       }
     }
-  
+
     drawWheel();
-  
+
+    let currentAngle = 0;
     const spinButton = document.getElementById("spin");
     const resultDiv = document.getElementById("result");
-  
-    let currentRotation = 0;
-  
+
     spinButton.addEventListener("click", () => {
-  const spins = Math.floor(Math.random() * 4) + 5; // от 5 до 8 оборотов
-  const randomOffset = Math.random() * 2 * Math.PI; // рандомный угол
-  const totalRotation = spins * 2 * Math.PI + randomOffset;
+      const spins = Math.floor(Math.random() * 5) + 5; // 5–9 оборотов
+      const randomSegment = Math.floor(Math.random() * prizes.length);
+      const arrowAngle = Math.PI / 2;
+      const prizeAngle = randomSegment * segmentAngle + segmentAngle / 2;
+      const totalRotation = spins * 2 * Math.PI + arrowAngle - prizeAngle;
 
-  currentAngle += totalRotation;
-  canvas.style.transform = `rotate(${-currentAngle}rad)`;
+      currentAngle += totalRotation;
+      canvas.style.transform = `rotate(${-currentAngle}rad)`;
 
-  setTimeout(() => {
-    const normalized = currentAngle % (2 * Math.PI);
-    const arrowAngle = Math.PI / 2; // стрелка справа
-    const effectiveAngle = (2 * Math.PI + arrowAngle - normalized) % (2 * Math.PI);
-    const winningIndex = Math.floor(effectiveAngle / segmentAngle) % prizes.length;
-
-    resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[winningIndex]}`;
-  }, 5100);
-});
+      setTimeout(() => {
+        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[randomSegment]}`;
+      }, 5100);
+    });
   </script>
 </body>
 </html>
