@@ -110,17 +110,35 @@
     <div class="side-panel">
       <button id="spin">Крутить</button>
       <div id="result">Ваш выигрыш появится здесь</div>
+
+
+      <div id="angle">Угол</div>
     </div>
   </div>
 
   <script>
     const prizes = [
-      "Рюкзак на 120 литров", "Перчатки", "Водка", "Чупа-Чупс", "Шкаф Деревянный",
-      "Покрутить Рулетку ещё два раза", "Шприц на Стамину", "Не повезло :(",
-      "Сапоги", "АКМ фулл-обвес", "150 тысяч рублей", "Шкаф для оружия",
-      "Пачка патронов 7.62x39", "Шприц 'Вытяжка из грибов'", "Шприц 'Рябиновка' [2 штуки]",
-      "Шприц 'Чертовка' [2 штуки]", "Оружейный ремень", "Обычный шкаф",
-      "Детектор 'Медведь'", "Шприц 'Промедол'", "Контейнер для артефактов"
+      "Рюкзак на 120 литров",
+      "Перчатки",
+       "Водка",
+        "Чупа-Чупс",
+         "Шкаф Деревянный",
+      "Покрутить Рулетку ещё два раза",
+       "Шприц на Стамину",
+        "Не повезло :(",
+      "Сапоги",
+       "АКМ фулл-обвес",
+        "150 тысяч рублей",
+         "Шкаф для оружия",
+      "Пачка патронов 7.62x39",
+       "Шприц 'Вытяжка из грибов'",
+        "Шприц 'Рябиновка' [2 штуки]",
+      "Шприц 'Чертовка' [2 штуки]",
+       "Оружейный ремень",
+        "Обычный шкаф",
+      "Детектор 'Медведь'",
+       "Шприц 'Промедол'",
+        "Контейнер для артефактов"
     ];
 
     const canvas = document.getElementById("wheel");
@@ -160,15 +178,15 @@
     const spinButton = document.getElementById("spin");
     const resultDiv = document.getElementById("result");
 
-    spinButton.addEventListener("click", () => {
-      const spins = Math.floor(Math.random() * 5) + 5; // 5–9 оборотов
-      const randomSegment = Math.floor(Math.random() * prizes.length);
-      const arrowAngle = Math.PI / 2;
-      const prizeAngle = randomSegment * segmentAngle + segmentAngle / 2;
-      const totalRotation = spins * 2 * Math.PI + arrowAngle - prizeAngle;
+    const angle = document.getElementById('angle');
 
-      currentAngle += totalRotation;
-      canvas.style.transform = `rotate(${-currentAngle}rad)`;
+    spinButton.addEventListener("click", () => {
+      const randomSegment = Math.floor(Math.random() * prizes.length);
+
+      const spinsCount = 5; // сколько раз крутить Настя
+      currentAngle = 360 * spinsCount + 360 / 21 * randomSegment + 5;
+      angle.innerText = 'Угол: ' + currentAngle;
+      canvas.style.transform = `rotate(${-currentAngle}deg)`;
 
       setTimeout(() => {
         resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[randomSegment]}`;
