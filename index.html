@@ -189,7 +189,6 @@
 
       const spinsCount = 3; 
       currentAngle = timesSpinned * 360 * spinsCount + 360 / 21 * randomSegment;
-      canvas.style.transform = `rotate(${-currentAngle}deg)`;
 
       setTimeout(() => {
         resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[randomSegment - 1]}`;
