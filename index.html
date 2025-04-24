@@ -5,101 +5,139 @@
   <title>Сталкерская Рулетка</title>
   <style>
     @font-face {
-      font-family: 'S.T.A.L.K.E.R';
-      src: url('https://raw.githubusercontent.com/kremvax/stalker-font/main/STALKER-Cyr.ttf') format('truetype');
-    }
+  font-family: 'S.T.A.L.K.E.R';
+  src: url('https://raw.githubusercontent.com/kremvax/stalker-font/main/STALKER-Cyr.ttf') format('truetype');
+}
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'S.T.A.L.K.E.R', sans-serif;
-      background: url('https://r4.wallpaperflare.com/wallpaper/1010/701/293/chernobyl-pripyat-ferris-wheel-call-of-duty-4-modern-warfare-wallpaper-79c0387d211a0dcb3607583fa0a1563d.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #c0c0c0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .main {
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'S.T.A.L.K.E.R', sans-serif;
+  background: url('https://r4.wallpaperflare.com/wallpaper/1010/701/293/chernobyl-pripyat-ferris-wheel-call-of-duty-4-modern-warfare-wallpaper-79c0387d211a0dcb3607583fa0a1563d.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #c0c0c0;
+  height: 100vh;
   display: flex;
-  align-items: center; /* Центровка по вертикали */
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  display: flex;
+  align-items: center;
   justify-content: center;
   gap: 50px;
 }
 
-    .wheel-wrapper {
-      position: relative;
-      width: 600px;
-      height: 600px;
-    }
+.wheel-wrapper {
+  position: relative;
+  width: 600px;
+  height: 600px;
+}
 
-    .wheel-container {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      border: 10px solid #444;
-      overflow: hidden;
-      box-shadow: 0 0 20px #000;
-    }
+.wheel-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 10px solid #444;
+  overflow: hidden;
+  box-shadow: 0 0 20px #000;
+}
 
-    #wheel {
-      width: 100%;
-      height: 100%;
-      transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
-    }
+#wheel {
+  width: 100%;
+  height: 100%;
+  transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
+}
 
-    .arrow {
-      position: absolute;
-      top: 50%;
-      right: -40px;
-      transform: translateY(-50%);
-      width: 60px;
-      height: 60px;
-      z-index: 1000;
-    }
+.arrow {
+  position: absolute;
+  top: 50%;
+  right: -40px;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  z-index: 1000;
+}
 
-    .arrow img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
+.arrow img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 
-    .side-panel {
+/* Стиль панели справа - терминал КПК */
+.side-panel {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.8); /* Тёмный фон */
   padding: 20px;
   border: 2px solid #555;
   border-radius: 10px;
-  width: 280px; 
+  width: 280px;
   box-shadow: 0 0 15px #000;
+  backdrop-filter: blur(5px); /* Размытие фона */
+  color: #0F0; /* Зеленый цвет текста */
 }
 
-    #spin {
-      padding: 15px 30px;
-      background-color: #111;
-      border: 2px solid #666;
-      color: #c0c0c0;
-      font-size: 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      font-family: 'S.T.A.L.K.E.R', sans-serif;
-    }
+#spin {
+  padding: 15px 30px;
+  background-color: #111;
+  border: 2px solid #666;
+  color: #c0c0c0;
+  font-size: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'S.T.A.L.K.E.R', sans-serif;
+  text-transform: uppercase;
+}
 
-    #spin:hover {
-      background-color: #333;
-    }
+#spin:hover {
+  background-color: #333;
+}
 
-    #result {
-      font-size: 18px;
-      text-shadow: 0 0 5px #000;
-    }
+#result {
+  font-size: 18px;
+  text-shadow: 0 0 5px #000;
+  font-family: 'S.T.A.L.K.E.R', sans-serif;
+  text-align: center;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
+    transform: translateX(-5px);
+  }
+  20% {
+    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
+    transform: translateX(5px);
+  }
+  40% {
+    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
+    transform: translateX(-5px);
+  }
+  60% {
+    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
+    transform: translateX(5px);
+  }
+  80% {
+    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
+    transform: translateX(-5px);
+  }
+  100% {
+    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
+    transform: translateX(0);
+  }
+}
+
+/* Добавляем эффект "глюков" для надписи с выигрышем */
+#result.glitch {
+  animation: glitch 1s infinite;
+}
   </style>
 </head>
 <body>
