@@ -174,22 +174,26 @@
 
     drawWheel();
 
-    let currentAngle = 0;
     const spinButton = document.getElementById("spin");
     const resultDiv = document.getElementById("result");
 
     const angle = document.getElementById('angle');
+    let currentAngle = 0;
+    let timesSpinned = 0; // сколько раз прокрутили
 
     spinButton.addEventListener("click", () => {
-      const randomSegment = Math.floor(Math.random() * prizes.length);
+      timesSpinned += 1;
+      const randomSegment = Math.floor(Math.random() * prizes.length) + 1;
+      console.log(randomSegment);
+      console.log(prizes[randomSegment]);
 
-      const spinsCount = 5; // сколько раз крутить Настя
-      currentAngle = 360 * spinsCount + 360 / 21 * randomSegment + 5;
+      const spinsCount = 3; // сколько раз крутить Настя
+      currentAngle = timesSpinned * 360 * spinsCount + 360 / 21 * randomSegment;
       angle.innerText = 'Угол: ' + currentAngle;
       canvas.style.transform = `rotate(${-currentAngle}deg)`;
 
       setTimeout(() => {
-        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[randomSegment]}`;
+        resultDiv.textContent = `Поздравляю! Ваш выигрыш: ${prizes[randomSegment - 1]}`;
       }, 5100);
     });
   </script>
