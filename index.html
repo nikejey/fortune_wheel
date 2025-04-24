@@ -6,7 +6,7 @@
   <style>
     @font-face {
   font-family: 'S.T.A.L.K.E.R';
-  src: url('https://raw.githubusercontent.com/kremvax/stalker-font/main/STALKER-Cyr.ttf') format('truetype');
+  src: url('https://fonts.googleapis.com/css2?family=Underdog&display=swa') format('truetype');
 }
 
 body {
@@ -80,7 +80,7 @@ body {
   width: 280px;
   box-shadow: 0 0 15px #000;
   backdrop-filter: blur(5px); /* Размытие фона */
-  color: #0F0; /* Зеленый цвет текста */
+  color: rgb(172, 175, 172); 
 }
 
 #spin {
@@ -105,38 +105,6 @@ body {
   text-shadow: 0 0 5px #000;
   font-family: 'S.T.A.L.K.E.R', sans-serif;
   text-align: center;
-}
-
-@keyframes glitch {
-  0% {
-    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
-    transform: translateX(-5px);
-  }
-  20% {
-    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
-    transform: translateX(5px);
-  }
-  40% {
-    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
-    transform: translateX(-5px);
-  }
-  60% {
-    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
-    transform: translateX(5px);
-  }
-  80% {
-    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
-    transform: translateX(-5px);
-  }
-  100% {
-    text-shadow: 0 0 5px #0F0, 0 0 10px #0F0, 0 0 15px #0F0;
-    transform: translateX(0);
-  }
-}
-
-/* Добавляем эффект "глюков" для надписи с выигрышем */
-#result.glitch {
-  animation: glitch 1s infinite;
 }
   </style>
 </head>
